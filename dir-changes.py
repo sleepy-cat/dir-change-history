@@ -8,20 +8,6 @@ import os
 import fnmatch
 import time
 
-# Parse options
-parser = optparse.OptionParser(usage='Usage: %prog [options] path [path2 ...]')
-parser.add_option('-g', action='store', type='long', dest='secs', default=10,
-                  help='set threshold for grouping files')
-parser.add_option('-f', action='append', type='string', dest='exc_files', default=[],
-                  help='exclude files matching a wildcard pattern')
-parser.add_option('-d', action='append', type='string', dest='exc_dirs', default=[],
-                  help='exclude directories matching a wildcard pattern')
-options, roots = parser.parse_args()
-
-if len(roots) == 0:
-    print('You must specify at least one path.\n')
-    parser.print_help()
-
 def iterFiles(options, roots):
     """ A generator to enumerate the contents directories recursively. """
     for root in roots:
