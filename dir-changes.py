@@ -46,7 +46,8 @@ def parseOptions():
 # Build file list, sort it and dump output
 ptime = 0
 count = 0
-for mtime, size, path in sorted(iterFiles(*parseOptions()), reverse=True):
+options, roots = parseOptions()
+for mtime, size, path in sorted(iterFiles(options, roots), reverse=True):
     if ptime - mtime >= options.secs:
         print('%s %d file(s)' % ('-' * 30, count))
         count = 0
