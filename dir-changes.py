@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# See http://preshing.com/20130115/view-your-filesystem-history-using-python
 
 # Author: Jeff Preshing
+# See http://preshing.com/20130115/view-your-filesystem-history-using-python
 
 import optparse
 import os
@@ -44,9 +44,7 @@ def parseOptions():
 
 
 # Build file list, sort it and dump output
-ptime = 0
-nfiles = 0
-ndirs = 0
+(ptime, nfiles, ndirs) = (0, 0, 0)
 options, roots = parseOptions()
 for mtime, size, path in sorted(iterFiles(options, roots), reverse=True):
     if ptime - mtime >= options.secs:
@@ -56,8 +54,7 @@ for mtime, size, path in sorted(iterFiles(options, roots), reverse=True):
         if ndirs > 0:
             fmt.append('{nd} dir(s)')
         print(('{delim} ' + ', '.join(fmt)).format(delim='-' * 30, nf=nfiles, nd=ndirs))
-        nfiles = 0
-        ndirs = 0
+        nfiles, ndirs = (0, 0)
     timeStr = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mtime))
     print('%s %10s %s' % (timeStr, size, path))
     ptime = mtime
