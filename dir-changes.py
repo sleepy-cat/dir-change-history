@@ -45,14 +45,25 @@ def parseOptions():
 
 # Build file list, sort it and dump output
 ptime = 0
-count = 0
+nfiles = 0
+ndirs = 0
 options, roots = parseOptions()
 for mtime, size, path in sorted(iterFiles(options, roots), reverse=True):
     if ptime - mtime >= options.secs:
-        print('%s %d file(s)' % ('-' * 30, count))
-        count = 0
+        fmt = []
+        if nfiles > 0:
+            fmt.append('{nf} file(s)')
+        if ndirs > 0:
+            fmt.append('{nd} dir(s)')
+        print(('{delim} ' + ', '.join(fmt)).format(delim='-' * 30, nf=nfiles, nd=ndirs))
+        nfiles = 0
+        ndirs = 0
     timeStr = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mtime))
     print('%s %10s %s' % (timeStr, size, path))
     ptime = mtime
-    count += 1
+    if isinstance(size, int):
+        nfiles += 1    # File
+    else:
+        ndirs += 1     # Directory
+
 
